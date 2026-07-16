@@ -1,0 +1,72 @@
+﻿<Window x:Name="window" x:Class="daysMatterr.itemWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:daysMatterr"
+        mc:Ignorable="d"
+        Title="倒数日" Width="170" Height="170" WindowStyle="None" ResizeMode="NoResize" Background="{x:Null}" AllowsTransparency="True" ShowInTaskbar="False">
+    <Window.Resources>
+        <Storyboard x:Key="show">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="小组件拖拽区域">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="hide">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="小组件拖拽区域">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="begin">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="小组件背景">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="小组件背景">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="1">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </Window.Resources>
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+            <BeginStoryboard x:Name="hide_BeginStoryboard" Storyboard="{StaticResource hide}"/>
+            <BeginStoryboard Storyboard="{StaticResource begin}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="UIElement.MouseEnter" SourceName="window">
+            <BeginStoryboard Storyboard="{StaticResource show}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="UIElement.MouseLeave" SourceName="window">
+            <BeginStoryboard x:Name="hide_BeginStoryboard1" Storyboard="{StaticResource hide}"/>
+        </EventTrigger>
+    </Window.Triggers>
+    <Border x:Name="小组件背景" BorderThickness="0" HorizontalAlignment="Left" Height="150" Margin="10" VerticalAlignment="Top" Width="150" Background="White" CornerRadius="10" RenderTransformOrigin="0.5,0.5">
+        <Border.RenderTransform>
+            <TransformGroup>
+                <ScaleTransform/>
+                <SkewTransform/>
+                <RotateTransform/>
+                <TranslateTransform/>
+            </TransformGroup>
+        </Border.RenderTransform>
+        <Border.Effect>
+            <DropShadowEffect Direction="0" BlurRadius="20" ShadowDepth="0" Opacity="0.2"/>
+        </Border.Effect>
+        <Grid x:Name="小组件主视图" ClipToBounds="True">
+            <TextBlock x:Name="倒数日标题" HorizontalAlignment="Center" Margin="0,40,0,0" TextWrapping="Wrap" Text="Title" VerticalAlignment="Top"/>
+            <StackPanel HorizontalAlignment="Center" Margin="0,20,0,0" VerticalAlignment="Center" Orientation="Horizontal">
+                <TextBlock x:Name="倒数日天数" HorizontalAlignment="Left" Margin="0" TextWrapping="Wrap" Text="NaN" VerticalAlignment="Top" FontSize="36"/>
+                <TextBlock x:Name="倒数日天" HorizontalAlignment="Left" Margin="0,0,0,8" TextWrapping="Wrap" Text="天" VerticalAlignment="Bottom" FontSize="15"/>
+            </StackPanel>
+            <Rectangle x:Name="小组件拖拽区域" Fill="#0C000000" HorizontalAlignment="Left" Height="15" Margin="10,10,0,0" RadiusY="8.5" RadiusX="8.5" VerticalAlignment="Top" Width="130" MouseLeftButtonDown="小组件拖拽区域_MouseLeftButtonDown"/>
+        </Grid>
+    </Border>
+</Window>
